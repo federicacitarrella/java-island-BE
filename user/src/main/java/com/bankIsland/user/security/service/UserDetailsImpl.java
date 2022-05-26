@@ -23,12 +23,12 @@ public class UserDetailsImpl implements UserDetails {
 
     public UserDetailsImpl(int id, String username, String password,
                            Collection<? extends GrantedAuthority> authorities,
-                           int userId) {
+                           int accountOwnerId) {
         this.id = id;
         this.username = username;
         this.password = password;
         this.authorities = authorities;
-        this.accountOwnerId = userId;
+        this.accountOwnerId = accountOwnerId;
     }
     public static UserDetailsImpl build(User user) {
         List<GrantedAuthority> authorities = user.getRoles().stream()

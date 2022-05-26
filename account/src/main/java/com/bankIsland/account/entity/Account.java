@@ -14,6 +14,12 @@ public class Account {
     @Column(name = "account_number")
     private String accountNumber;
 
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "last_name")
+    private String lastName;
+
     @Column(name = "balance")
     private double balance;
 
@@ -26,11 +32,13 @@ public class Account {
     public Account() {
     }
 
-    public Account(String accountNumber, double balance, int status, int userId) {
+    public Account(String accountNumber, String firstName, String lastName, double balance, int status, int accountOwnerId) {
         this.accountNumber = accountNumber;
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.balance = balance;
         this.status = status;
-        this.accountOwnerId = userId;
+        this.accountOwnerId = accountOwnerId;
     }
 
     public int getId() {
@@ -47,6 +55,22 @@ public class Account {
 
     public void setAccountNumber(String accountNumber) {
         this.accountNumber = accountNumber;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     public double getBalance() {

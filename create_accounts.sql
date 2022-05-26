@@ -6,6 +6,8 @@ USE `accounts`;
 DROP TABLE IF EXISTS `accounts`;
 CREATE TABLE `accounts` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `first_name` varchar(45) NOT NULL,
+  `last_name` varchar(45) NOT NULL,
   `account_number` varchar(45) UNIQUE NOT NULL,
   `balance` double NOT NULL,
   `status` tinyint NOT NULL,

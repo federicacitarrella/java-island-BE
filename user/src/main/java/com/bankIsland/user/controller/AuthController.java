@@ -10,14 +10,15 @@ import com.bankIsland.user.entity.AccountOwner;
 import com.bankIsland.user.entity.ERole;
 import com.bankIsland.user.entity.Role;
 import com.bankIsland.user.entity.User;
+import com.bankIsland.user.rabbit.CreationAccountMessage;
 import com.bankIsland.user.rabbit.Sender;
 import com.bankIsland.user.security.jwt.JwtUtils;
 import com.bankIsland.user.security.service.UserDetailsImpl;
 import com.bankIsland.user.service.AccountOwnerService;
 import com.bankIsland.user.service.UserService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -51,8 +52,6 @@ public class AuthController {
     PasswordEncoder encoder;
     @Autowired
     JwtUtils jwtUtils;
-    @Autowired
-    private RabbitTemplate rabbitTemplate;
     @Autowired
     private Sender sender;
 
@@ -91,7 +90,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) throws JsonProcessingException {
         logger.info(">>>>>>>>>>>>>>>>Request signup");
         if (userService.existsByUsername(signUpRequest.getEmail()) || accountOwnerService.existsByEmail(signUpRequest.getEmail())) {
             return ResponseEntity
@@ -111,9 +110,9 @@ public class AuthController {
                 accountOwner.getId());
         userService.save(user);
 
-//        sender.send(new CreationAccountMessage(accountOwner.getId()));
+        sender.send(new CreationAccountMessage(accountOwner.getId(), accountOwner.getFirstName(), accountOwner.getLastName()));
 
-        sender.send(String.valueOf(accountOwner.getId()));
+//        sender.send(String.valueOf(accountOwner.getId()));
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }

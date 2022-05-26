@@ -1,7 +1,7 @@
 package com.bankIsland.account.rabbit;
 
-import com.bankIsland.account.dao.AccountRepository;
 import com.bankIsland.account.entity.Account;
+import com.bankIsland.account.service.AccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -14,13 +14,13 @@ import java.util.Random;
 public class Listener {
 
     @Autowired
-    private AccountRepository accountRepository;
+    private AccountService accountService;
 
     private static final Logger logger = LoggerFactory.getLogger(Listener.class);
 
 
     @RabbitListener(queues = "accountCreationQueue")
-    public void listen(String accountOwnerId) {
+    public void listen(CreationAccountMessage creationAccountMessage) {
 
         logger.info(">>>>>> creating Account");
 
@@ -28,10 +28,10 @@ public class Listener {
         String accountNumber;
         do {
             accountNumber = "IT" + rand.nextInt(1000000000);
-        } while (accountRepository.existsByAccountNumber(accountNumber));
+        } while (accountService.existsByAccountNumber(accountNumber));
 
-        Account newAccount = new Account(accountNumber, 0, 1, Integer.parseInt(accountOwnerId));
-        accountRepository.save(newAccount);
+        Account newAccount = new Account(accountNumber, creationAccountMessage.getFirstName(), creationAccountMessage.getLastName(), 0, 1, creationAccountMessage.getAccountOwnerId());
+        accountService.save(newAccount);
     }
 
 //    @RabbitListener(queues = "accountCreationQueue")
