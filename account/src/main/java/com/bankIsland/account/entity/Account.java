@@ -20,8 +20,8 @@ public class Account {
     @Column(name = "status")
     private int status;
 
-    @Column(name = "user_id")
-    private int userId;
+    @Column(name = "account_owner_id")
+    private int accountOwnerId;
 
     public Account() {
     }
@@ -30,7 +30,7 @@ public class Account {
         this.accountNumber = accountNumber;
         this.balance = balance;
         this.status = status;
-        this.userId = userId;
+        this.accountOwnerId = userId;
     }
 
     public int getId() {
@@ -65,11 +65,11 @@ public class Account {
         this.status = status;
     }
 
-    public int getUserId() {
-        return userId;
+    public int getAccountOwnerId() {
+        return accountOwnerId;
     }
 
-    public void setUserId(int userId) {
-        this.userId = userId;
+    public void setAccountOwnerId(int userId) {
+        this.accountOwnerId = userId;
     }
 }

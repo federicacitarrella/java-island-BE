@@ -26,18 +26,18 @@ public class JwtAuthenticationFilter implements GatewayFilter{
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
         ServerHttpRequest request = (ServerHttpRequest) exchange.getRequest();
 
-        final List<String> publicApiEndpoints = List.of("/api/auth/signin", "/api/auth/signup", "/api/auth/prova");
+        final List<String> publicApiEndpoints = List.of("/api/auth/signin", "/api/auth/signup", "/api/auth/prova", "/swagger-ui.html");
         final List<String> userApiEndpoints = List.of("/api/accounts");
-        final List<String> employeeApiEndpoints = List.of();
+        final List<String> employeeApiEndpoints = List.of("/api/accounts/validation/**");
 
         Predicate<ServerHttpRequest> isApiSecuredGeneral = r -> publicApiEndpoints.stream()
-                .noneMatch(uri -> r.getURI().getPath().contains(uri));
+                .noneMatch(uri -> r.getURI().getPath().endsWith(uri));
 
         Predicate<ServerHttpRequest> isApiSecuredUser = r -> userApiEndpoints.stream()
-                .anyMatch(uri -> r.getURI().getPath().contains(uri));
+                .anyMatch(uri -> r.getURI().getPath().endsWith(uri));
 
         Predicate<ServerHttpRequest> isApiSecuredEmployee = r -> employeeApiEndpoints.stream()
-                .anyMatch(uri -> r.getURI().getPath().contains(uri));
+                .anyMatch(uri -> r.getURI().getPath().endsWith(uri));
 
         if (isApiSecuredGeneral.test(request)) {
             if (!request.getHeaders().containsKey("Authorization")) {

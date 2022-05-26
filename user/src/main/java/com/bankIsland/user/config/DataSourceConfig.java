@@ -48,9 +48,4 @@ public class DataSourceConfig {
 		return new Queue("accountCreationQueue", false);
 	}
 
-//	@Bean
-//	public Queue accountQueue() {
-//		return new Queue("accountQueue", false);
-//	}
-
 }

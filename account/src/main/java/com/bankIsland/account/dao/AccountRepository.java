@@ -10,8 +10,9 @@ import java.util.Optional;
 public interface AccountRepository extends JpaRepository<Account, Integer> {
 
     Optional<Account> findByAccountNumber(String accountNumber);
-    List<Account> findAllByUserId(int userId);
+    List<Account> findAllByAccountOwnerId(int accountOwnerId);
     Boolean existsByAccountNumber(String accountNumber);
+    List<Account> findAllByStatus(int status);
 
     @Override
     @RestResource(exported = false)

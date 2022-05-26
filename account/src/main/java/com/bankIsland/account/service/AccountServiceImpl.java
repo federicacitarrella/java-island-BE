@@ -38,13 +38,18 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
-    public List<Account> findAllByUserId(int userId) {
-        return accountRepository.findAllByUserId(userId);
+    public List<Account> findAllByAccountOwnerId(int userId) {
+        return accountRepository.findAllByAccountOwnerId(userId);
     }
 
     @Override
     public boolean existsByAccountNumber(String accountNumber) {
         return accountRepository.existsByAccountNumber(accountNumber);
+    }
+
+    @Override
+    public List<Account> findAllByStatus(int status) {
+        return accountRepository.findAllByStatus(status);
     }
 
     //    @Override

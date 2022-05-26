@@ -14,8 +14,12 @@ public interface AccountService {
 
     public Account findByAccountNumber(String accountNumber);
 
-    public List<Account> findAllByUserId(int userId);
+    public List<Account> findAllByAccountOwnerId(int userId);
+
+    public List<Account> findAllByStatus(int status);
 
     public boolean existsByAccountNumber(String accountNumber);
+
+
 
 }

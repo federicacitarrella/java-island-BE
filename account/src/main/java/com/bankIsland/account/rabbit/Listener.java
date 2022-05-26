@@ -48,5 +48,6 @@ public class Listener {
 //        } while (accountRepository.existsByAccountNumber(accountNumber));
 //
 //        Account newAccount = new Account(accountNumber, 0, 1, accountOwnerId);
+//        accountRepository.save(newAccount);
 //    }
 }
