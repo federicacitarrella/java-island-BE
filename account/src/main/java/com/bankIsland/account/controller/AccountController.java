@@ -29,10 +29,8 @@ public class AccountController {
 
     @PostMapping
     public ResponseEntity createAccount(@RequestHeader("Authorization") String token, @RequestBody AccountCreationRequest request) {
-        if (token.startsWith("Bearer ")) {
-            token = token.substring(7);
-        }
-        int accountOwnerId = jwtUtils.getUserIdFromJwtToken(token);
+
+        int accountOwnerId = jwtUtils.getAccounOwnerIdFromJwtToken(token);
         Random rand = new Random();
         try {
             Account account = accountService.findByAccountNumber(request.getAccountNumber());
@@ -58,14 +56,12 @@ public class AccountController {
 
     @PutMapping("/{account_id}")
     public ResponseEntity closureAccount(@RequestHeader("Authorization") String token, @PathVariable int account_id) {
-        if (token.startsWith("Bearer ")) {
-            token = token.substring(7);
-        }
-        int userId = jwtUtils.getUserIdFromJwtToken(token);
+
+        int accountOwnerId = jwtUtils.getAccounOwnerIdFromJwtToken(token);
 
         try {
             Account account = accountService.findById(account_id);
-            if (userId == account.getAccountOwnerId()) {
+            if (accountOwnerId == account.getAccountOwnerId()) {
                 if (account.getBalance() == 0) {
                     account.setStatus(3);
                     accountService.save(account);
@@ -79,6 +75,17 @@ public class AccountController {
         }
 
         return ResponseEntity.badRequest().body(new MessageResponse("Error: Invalid request."));
+    }
+
+    @GetMapping
+    public ResponseEntity getAccounts(@RequestHeader("Authorization") String token){
+        try {
+            return ResponseEntity.ok(accountService.findAllByAccountOwnerId(jwtUtils.getAccounOwnerIdFromJwtToken(token)));
+        } catch (NoSuchElementException e){
+            return ResponseEntity.badRequest().body(new MessageResponse("No accounts available."));
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().body(new MessageResponse("Server error, try later."));
+        }
     }
 
     @GetMapping("/intern/registrations")

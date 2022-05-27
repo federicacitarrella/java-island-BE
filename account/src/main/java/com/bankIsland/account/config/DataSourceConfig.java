@@ -46,6 +46,16 @@ public class DataSourceConfig {
 	}
 
 	@Bean
+	public Queue balanceQueue() {
+		return new Queue("transferQueue", false);
+	}
+
+	@Bean
+	public Queue transactionQueue() {
+		return new Queue("transactionQueue", false);
+	}
+
+	@Bean
 	public RabbitTemplate rabbitTemplate(final ConnectionFactory connectionFactory) {
 		final RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
 		rabbitTemplate.setMessageConverter(producerJackson2MessageConverter());

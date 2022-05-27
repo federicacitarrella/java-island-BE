@@ -8,6 +8,7 @@ import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.NoSuchElementException;
 import java.util.Random;
 
 @Service
@@ -39,6 +40,66 @@ public class Listener {
         }
 
         return true;
+    }
+
+    @RabbitListener(queues = "transferQueue")
+    public int listenTransfer(TransferMessage message) {
+
+        try {
+            Account accountFrom = accountService.findByAccountNumber(message.getAccountNumberFrom());
+
+            if(message.getAccountOwnerId()==accountFrom.getAccountOwnerId()) {
+                Account accountTo = accountService.findByAccountNumber(message.getAccountNumberTo());
+                double balance = accountFrom.getBalance();
+
+                if ((message.getAmount() < balance) && (message.getAmount() > 0)) {
+
+                    accountFrom.setBalance(balance - message.getAmount());
+                    accountTo.setBalance(message.getAmount());
+
+                    accountService.save(accountFrom);
+                    accountService.save(accountTo);
+
+                    return 1;
+                } else {
+                    return 2;
+                }
+            } else {
+                return 3;
+            }
+        } catch (NoSuchElementException e) {
+            return 3;
+        } catch (Exception e) {
+            return 4;
+        }
+    }
+
+    @RabbitListener(queues = "transactionQueue")
+    public int listenTransaction(TransactionMessage message) {
+
+        try {
+            Account account = accountService.findByAccountNumber(message.getAccountNumber());
+
+            if(message.getAccountOwnerId()==account.getAccountOwnerId()) {
+                double balance = account.getBalance();
+
+                if ((balance+message.getAmount() > 0)) {
+
+                    account.setBalance(balance + message.getAmount());
+                    accountService.save(account);
+
+                    return 1;
+                } else {
+                    return 2;
+                }
+            } else {
+                return 3;
+            }
+        } catch (NoSuchElementException e) {
+            return 3;
+        } catch (Exception e) {
+            return 4;
+        }
     }
 
 //    @RabbitListener(queues = "accountCreationQueue")
