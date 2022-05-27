@@ -1,4 +1,4 @@
-package com.bankisland.transaction.jwt;
+package com.bankIsland.transaction.jwt;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -20,7 +20,12 @@ public class JwtUtils {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }
 
-    public int getUserIdFromJwtToken(String token) {
+    public int getAccounOwnerIdFromJwtToken(String token) {
+
+        if (token.startsWith("Bearer ")) {
+            token = token.substring(7);
+        }
+
         Claims claims = Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody();
 
         return (int) claims.get("userId");

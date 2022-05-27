@@ -1,4 +1,4 @@
-package com.bankisland.transaction.rabbit;
+package com.bankIsland.transaction.rabbit;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -11,9 +11,17 @@ public class Sender {
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
-    public Double sendBalanceRequest(String message) throws JsonProcessingException {
+    public int sendTransferRequest(TransferMessage message) throws JsonProcessingException {
 
-        Object balance = rabbitTemplate.convertSendAndReceive("balanceQueue", message);
-        return (Double) balance;
+        Object response = rabbitTemplate.convertSendAndReceive("transferQueue", message);
+
+        return (int) response;
+    }
+
+    public int sendTransactionRequest(TransactionMessage message) throws JsonProcessingException {
+
+        Object response = rabbitTemplate.convertSendAndReceive("transactionQueue", message);
+
+        return (int) response;
     }
 }

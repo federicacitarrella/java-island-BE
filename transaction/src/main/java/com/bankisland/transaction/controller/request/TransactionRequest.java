@@ -1,33 +1,23 @@
-package com.bankisland.transaction.controller.request;
+package com.bankIsland.transaction.controller.request;
 
 public class TransactionRequest {
 
+    private String accountNumber;
     private double amount;
-    private String accountNumberFrom;
-    private String accountNumberTo;
 
     public TransactionRequest(){}
 
-    public TransactionRequest(double amount, String accountNumberFrom, String accountNumberTo) {
+    public TransactionRequest(String accountNumber, double amount) {
+        this.accountNumber = accountNumber;
         this.amount = amount;
-        this.accountNumberFrom = accountNumberFrom;
-        this.accountNumberTo = accountNumberTo;
     }
 
-    public String getAccountNumberFrom() {
-        return accountNumberFrom;
+    public String getAccountNumber() {
+        return accountNumber;
     }
 
-    public void setAccountNumberFrom(String accountNumberFrom) {
-        this.accountNumberFrom = accountNumberFrom;
-    }
-
-    public String getAccountNumberTo() {
-        return accountNumberTo;
-    }
-
-    public void setAccountNumberTo(String accountNumberTo) {
-        this.accountNumberTo = accountNumberTo;
+    public void setAccountNumber(String accountNumber) {
+        this.accountNumber = accountNumber;
     }
 
     public double getAmount() {
@@ -37,5 +27,4 @@ public class TransactionRequest {
     public void setAmount(double amount) {
         this.amount = amount;
     }
-
 }

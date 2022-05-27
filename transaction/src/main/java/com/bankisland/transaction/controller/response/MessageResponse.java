@@ -1,4 +1,4 @@
-package com.bankisland.transaction.controller.response;
+package com.bankIsland.transaction.controller.response;
 
 public class MessageResponse {
 

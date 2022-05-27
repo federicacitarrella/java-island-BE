@@ -1,4 +1,4 @@
-package com.bankisland.transaction.rabbit;
+package com.bankIsland.transaction.rabbit;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
