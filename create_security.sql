@@ -7,12 +7,12 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `username` varchar(50) NOT NULL,
-  `password` char(68) NOT NULL,
+  `password` char(80) NOT NULL,
   `account_owner_id` int(11) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO users(username,password,account_owner_id) VALUES('dip@gmail.com','$2a$10$VtzUQygDXPmT5suYyuaSq.CMjtxvMCbcrtJVXnWGqOaCjUJutDRG6',0);
+INSERT INTO users(username,password,account_owner_id) VALUES('dip@gmail.com','1f2f8338fcde644238e7c2d3be5ea75d8281df0c301c1db5b23bbf663ddd20c1f67caab584d2c5b4',0);
 --
 -- Dumping data for table `users`
 --

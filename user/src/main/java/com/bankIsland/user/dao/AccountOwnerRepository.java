@@ -7,14 +7,14 @@ import org.springframework.data.rest.core.annotation.RestResource;
 import java.util.List;
 import java.util.Optional;
 
-public interface AccountOwnerRepository extends JpaRepository<AccountOwner, Long> {
+public interface AccountOwnerRepository extends JpaRepository<AccountOwner, Integer> {
 
     Optional<AccountOwner> findByEmail(String email);
     Boolean existsByEmail(String email);
 
     @Override
     @RestResource(exported = false)
-    void deleteById(Long along);
+    void deleteById(Integer id);
 
     @Override
     @RestResource(exported = false)
@@ -30,7 +30,7 @@ public interface AccountOwnerRepository extends JpaRepository<AccountOwner, Long
 
     @Override
     @RestResource(exported = false)
-    Optional<AccountOwner> findById(Long along);
+    Optional<AccountOwner> findById(Integer id);
 
     @Override
     @RestResource(exported = false)

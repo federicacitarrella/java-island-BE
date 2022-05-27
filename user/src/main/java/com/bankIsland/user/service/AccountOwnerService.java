@@ -14,4 +14,6 @@ public interface AccountOwnerService {
 
     public List<AccountOwner> findAll();
 
+    public void deleteById(int id);
+
 }

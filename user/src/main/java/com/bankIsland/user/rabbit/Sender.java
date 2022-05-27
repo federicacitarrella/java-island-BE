@@ -1,7 +1,8 @@
 package com.bankIsland.user.rabbit;
 
+import com.bankIsland.user.service.AccountOwnerService;
+import com.bankIsland.user.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,15 +12,20 @@ public class Sender {
 
     @Autowired
     private RabbitTemplate rabbitTemplate;
+    @Autowired
+    private AccountOwnerService accountOwnerService;
+    @Autowired
+    private UserService userService;
 
-    private ObjectMapper objectMapper;
+    public boolean send(CreationAccountMessage message, int userId) throws JsonProcessingException {
 
-    public void send(CreationAccountMessage message) throws JsonProcessingException {
-//        String messageJson = objectMapper.writeValueAsString(message);
-//        Message messageToSend = MessageBuilder
-//                .withBody(messageJson.getBytes())
-//                .setContentType(MessageProperties.CONTENT_TYPE_JSON)
-//                .build();
-        rabbitTemplate.convertAndSend("accountCreationQueue", message);
+        Object success = rabbitTemplate.convertSendAndReceive("accountCreationQueue", message);
+
+        if(!(Boolean) success) {
+            accountOwnerService.deleteById(message.getAccountOwnerId());
+            userService.deleteById(userId);
+            return false;
+        }
+        return true;
     }
 }

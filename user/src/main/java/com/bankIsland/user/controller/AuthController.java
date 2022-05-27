@@ -110,11 +110,15 @@ public class AuthController {
                 accountOwner.getId());
         userService.save(user);
 
-        sender.send(new CreationAccountMessage(accountOwner.getId(), accountOwner.getFirstName(), accountOwner.getLastName()));
+        boolean response = sender.send(new CreationAccountMessage(accountOwner.getId(), accountOwner.getFirstName(), accountOwner.getLastName()), user.getId());
 
 //        sender.send(String.valueOf(accountOwner.getId()));
 
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        if(response) {
+            return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+        } else {
+            return ResponseEntity.internalServerError().body(new MessageResponse("Server error, try later."));
+        }
     }
 
     @GetMapping("/prova")

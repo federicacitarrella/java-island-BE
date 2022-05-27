@@ -37,6 +37,11 @@ public class AccountOwnerServiceImpl implements AccountOwnerService {
     public List<AccountOwner> findAll() {
         return accountOwnerRepository.findAll(Sort.by(Sort.Direction.ASC, "firstName").and(Sort.by("lastName")));
     }
+
+    @Override
+    public void deleteById(int id) {
+        accountOwnerRepository.deleteById(id);
+    }
 }
 
 

@@ -20,18 +20,25 @@ public class Listener {
 
 
     @RabbitListener(queues = "accountCreationQueue")
-    public void listen(CreationAccountMessage creationAccountMessage) {
+    public Boolean listen(CreationAccountMessage creationAccountMessage) {
 
         logger.info(">>>>>> creating Account");
 
-        Random rand = new Random();
-        String accountNumber;
-        do {
-            accountNumber = "IT" + rand.nextInt(1000000000);
-        } while (accountService.existsByAccountNumber(accountNumber));
+        try {
+            Random rand = new Random();
+            String accountNumber;
+            do {
+                accountNumber = "IT" + rand.nextInt(1000000000);
+            } while (accountService.existsByAccountNumber(accountNumber));
 
-        Account newAccount = new Account(accountNumber, creationAccountMessage.getFirstName(), creationAccountMessage.getLastName(), 0, 1, creationAccountMessage.getAccountOwnerId());
-        accountService.save(newAccount);
+            Account newAccount = new Account(accountNumber, creationAccountMessage.getFirstName(), creationAccountMessage.getLastName(), 0, 1, creationAccountMessage.getAccountOwnerId());
+            accountService.save(newAccount);
+//            throw new RuntimeException();
+        } catch (Exception e) {
+            return false;
+        }
+
+        return true;
     }
 
 //    @RabbitListener(queues = "accountCreationQueue")
