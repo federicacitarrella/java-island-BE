@@ -1,0 +1,20 @@
+PER CORRENTISTA:
+
+GET /api/transactions/{accountNumber} LISTA ULTIME 10 OPERAZIONI DEL CONTO SPECIFICATO
+GET /api/transactions LISTA DI TUTTE LE OPERAZIONI DI TUTTI I CONTI DELL'UTENTE
+
+POST /api/accounts RICHIESTA APERTURA CONTO MULTIPLO
+PUT /api/accounts/{account_id} RICHIESTA CHIUSURA CONTO
+
+
+PER DIPENDENTE:
+
+GET /api/account_owners/intern LISTA CORRENTISTI
+GET /api/accounts/intern/registrations LISTA DELLE RICHIESTE APERTURA PRIMO CONTO
+GET /api/accounts/intern/opening_accounts LISTA DELLE RICHIESTE APERTURA CONT0 MULTIPL0
+GET /api/accounts/intern/closing_accounts LISTA DELLE RICHIESTE CHIUSURA CONT0
+
+PUT /api/accounts/intern/validation/{account_id} VALIDAZIONE CONTO
+PUT /api/accounts/intern/rejection/{account_id} NON ACCETTAZIONE CONTO
+
+DELETE /api/accounts/intern/delete/{account_id} CANCELLAZIONE DEFINITIVA CONTO
