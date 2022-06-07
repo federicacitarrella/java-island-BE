@@ -1,7 +1,7 @@
-DROP DATABASE IF EXISTS `spring_security_final_challenge`;
+DROP DATABASE IF EXISTS `securityDB`;
 
-CREATE DATABASE  IF NOT EXISTS `spring_security_final_challenge`;
-USE `spring_security_final_challenge`;
+CREATE DATABASE  IF NOT EXISTS `securityDB`;
+USE `securityDB`;
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
